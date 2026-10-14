@@ -1,8 +1,8 @@
-# CatalogSync — WooCommerce REST API Integration Specification
+# Merchline — WooCommerce REST API Integration Specification
 
 ## 1. Integration Scope & Standards
 
-CatalogSync integrates with WooCommerce using the official **WooCommerce REST API v3** specification.
+Merchline integrates with WooCommerce using the official **WooCommerce REST API v3** specification.
 
 - **Protocol**: HTTPS JSON REST
 - **Base Endpoint**: `/wp-json/wc/v3/products`
@@ -13,7 +13,7 @@ CatalogSync integrates with WooCommerce using the official **WooCommerce REST AP
 
 ## 2. Field Mapping Specification
 
-| CatalogSync PIM Field | WooCommerce REST v3 Field | Data Type | Transformation & Validation |
+| Merchline PIM Field | WooCommerce REST v3 Field | Data Type | Transformation & Validation |
 | :--- | :--- | :--- | :--- |
 | `name` | `name` | `string` | Required. Min 2 chars. Sanitised text. |
 | `sku` | `sku` | `string` | Required. Unique, uppercase alphanumeric with hyphens/underscores. |
@@ -75,7 +75,7 @@ CatalogSync integrates with WooCommerce using the official **WooCommerce REST AP
   "stock_quantity": 45,
   "manage_stock": true,
   "in_stock": true,
-  "sync_engine": "CatalogSync PIM Demo Adapter v1.0"
+  "sync_engine": "Merchline PIM Demo Adapter v1.0"
 }
 ```
 
@@ -98,7 +98,7 @@ CatalogSync integrates with WooCommerce using the official **WooCommerce REST AP
 
 ## 4. Error Simulation Matrix
 
-CatalogSync includes a built-in error injector in the demo adapter so testers can verify UI resilience without touching live infrastructure:
+Merchline includes a built-in error injector in the demo adapter so testers can verify UI resilience without touching live infrastructure:
 
 | Injected Scenario | Simulated HTTP Status | Error Code | Observed Behavior in Dashboard |
 | :--- | :--- | :--- | :--- |
@@ -115,7 +115,7 @@ CatalogSync includes a built-in error injector in the demo adapter so testers ca
 To transition this prototype into a production-grade deployment connected to a live WooCommerce store:
 
 ```
-[ CatalogSync Frontend Client ]
+[ Merchline Frontend Client ]
               │ (HTTPS Bearer Token / Session)
               ▼
 [ Secure Backend API Proxy (Node / Go / Cloudflare Worker) ]

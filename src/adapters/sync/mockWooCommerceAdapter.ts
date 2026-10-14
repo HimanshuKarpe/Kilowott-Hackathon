@@ -3,7 +3,7 @@ import { SyncLogEntry, SyncSimulationConfig, WooCommerceProductPayload } from '.
 import { ISyncAdapter, ProductSyncResult, BatchSyncResult } from './syncAdapter.interface';
 
 /**
- * Transforms an internal CatalogSync Product into standard WooCommerce REST API v3 format.
+ * Transforms an internal Merchline Product into standard WooCommerce REST API v3 format.
  * Ref: https://woocommerce.github.io/woocommerce-rest-api-docs/#create-a-product
  */
 export function productToWooCommercePayload(product: Product): WooCommerceProductPayload {
@@ -207,7 +207,7 @@ export class MockWooCommerceAdapter implements ISyncAdapter {
       sale_price: requestPayload.sale_price || '',
       manage_stock: true,
       in_stock: product.stockQuantity > 0,
-      sync_engine: 'CatalogSync PIM Demo Adapter v1.0',
+      sync_engine: 'Merchline PIM Demo Adapter v1.0',
     };
 
     const log: SyncLogEntry = {

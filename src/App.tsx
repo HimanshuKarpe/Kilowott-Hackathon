@@ -9,11 +9,13 @@ import { BatchActionToolbar } from './components/catalogue/BatchActionToolbar';
 import { ProductTable } from './components/catalogue/ProductTable';
 import { ProductGrid } from './components/catalogue/ProductGrid';
 import { EmptyState } from './components/catalogue/EmptyState';
+import { AttributesView } from './components/attributes/AttributesView';
 import { ProductModal } from './components/product-modal/ProductModal';
 import { SyncCentreView } from './components/sync/SyncCentreView';
 import { PayloadInspectModal } from './components/sync/PayloadInspectModal';
 import { SimulationConfigModal } from './components/sync/SimulationConfigModal';
 import { ConfirmDialog } from './components/common/ConfirmDialog';
+import { Modal } from './components/common/Modal';
 import { DocsView } from './components/docs/DocsView';
 import { Product } from './types/product';
 import { SyncLogEntry } from './types/sync';
@@ -27,6 +29,7 @@ const MainLayout: React.FC = () => {
     resetAllDataToDefaults,
     clearSyncLogs,
     resetFilters,
+    setFilters,
   } = useCatalog();
 
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
@@ -38,6 +41,7 @@ const MainLayout: React.FC = () => {
 
   const [isSimulationSettingsOpen, setIsSimulationSettingsOpen] = useState(false);
   const [logToInspect, setLogToInspect] = useState<SyncLogEntry | null>(null);
+  const [isDocsModalOpen, setIsDocsModalOpen] = useState(false);
 
   // Confirm Dialog States
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
@@ -56,9 +60,14 @@ const MainLayout: React.FC = () => {
     setIsProductModalOpen(true);
   };
 
+  const handleNavigateToProductsWithFilter = (query: string) => {
+    setFilters({ searchQuery: query });
+    setActiveTab('catalogue');
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100">
-      {/* Demo Sandbox Top Indicator Banner */}
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+      {/* Slim WooCommerce Simulator Status Bar */}
       <DemoBanner onOpenSettings={() => setIsSimulationSettingsOpen(true)} />
 
       {/* Main Navigation Header */}
@@ -67,23 +76,25 @@ const MainLayout: React.FC = () => {
         onSelectTab={setActiveTab}
         onOpenAddModal={handleOpenAdd}
         onOpenResetConfirm={() => setIsResetConfirmOpen(true)}
+        onOpenDocs={() => setIsDocsModalOpen(true)}
       />
 
       {/* Main Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        {/* TAB 1: DASHBOARD */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+        {/* WORKSPACE 1: DASHBOARD */}
         {activeTab === 'dashboard' && (
           <DashboardView
             onNavigate={setActiveTab}
             onOpenSettings={() => setIsSimulationSettingsOpen(true)}
             onInspectLog={(log) => setLogToInspect(log)}
+            onEditProduct={handleOpenEdit}
           />
         )}
 
-        {/* TAB 2: PRODUCT CATALOGUE */}
+        {/* WORKSPACE 2: PRODUCTS CATALOGUE */}
         {activeTab === 'catalogue' && (
-          <div className="space-y-6 animate-slideIn">
-            {/* Filter & Search Toolbar */}
+          <div className="space-y-4">
+            {/* Filter Toolbar */}
             <FilterToolbar viewMode={viewMode} onToggleViewMode={setViewMode} />
 
             {/* Batch Selection Action Floating Bar */}
@@ -113,7 +124,15 @@ const MainLayout: React.FC = () => {
           </div>
         )}
 
-        {/* TAB 3: SYNC CENTRE */}
+        {/* WORKSPACE 3: ATTRIBUTES OVERVIEW */}
+        {activeTab === 'attributes' && (
+          <AttributesView
+            onEditProduct={handleOpenEdit}
+            onNavigateToProductsWithFilter={handleNavigateToProductsWithFilter}
+          />
+        )}
+
+        {/* WORKSPACE 4: SYNCHRONISATION */}
         {activeTab === 'sync' && (
           <SyncCentreView
             onOpenSettings={() => setIsSimulationSettingsOpen(true)}
@@ -121,16 +140,15 @@ const MainLayout: React.FC = () => {
             onOpenClearLogsConfirm={() => setIsClearLogsConfirmOpen(true)}
           />
         )}
-
-        {/* TAB 4: ARCHITECTURE & DOCS */}
-        {activeTab === 'docs' && <DocsView />}
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-surface-950/40 py-6 mt-12 text-center text-xs text-slate-500">
+      <footer className="border-t border-[#E2E8F0] bg-white py-4 mt-12 text-xs text-[#64748B]">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>CatalogSync PIM • Built for WooCommerce Integration</span>
-          <span className="font-mono text-[11px]">Strict TypeScript • Vitest Verified • Responsive Tailwind</span>
+          <span className="font-medium text-[#0F172A]">Merchline · Product Information Management</span>
+          <span className="font-mono text-[11px] text-[#64748B]">
+            One catalogue. Every channel. • TypeScript • Vitest • LocalStorage Persistence
+          </span>
         </div>
       </footer>
 
@@ -154,6 +172,17 @@ const MainLayout: React.FC = () => {
         onClose={() => setLogToInspect(null)}
         log={logToInspect}
       />
+
+      {/* Secondary Utility: Documentation & Architecture Modal */}
+      <Modal
+        isOpen={isDocsModalOpen}
+        onClose={() => setIsDocsModalOpen(false)}
+        title="Merchline Documentation & Architecture"
+        subtitle="System blueprint, layered structure, and WooCommerce REST API v3 mapping"
+        maxWidth="4xl"
+      >
+        <DocsView />
+      </Modal>
 
       {/* Confirm Single Delete */}
       <ConfirmDialog

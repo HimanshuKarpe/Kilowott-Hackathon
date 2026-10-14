@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   icon?: React.ReactNode;
   children: React.ReactNode;
@@ -20,25 +20,26 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-950 disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]';
+    'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-white disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer';
 
   const variants = {
     primary:
-      'bg-brand-600 hover:bg-brand-500 text-white shadow-lg shadow-brand-500/25 border border-brand-400/30 focus:ring-brand-500',
+      'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white border border-blue-600 shadow-xs focus:ring-2 focus:ring-blue-500/20',
     secondary:
-      'bg-surface-800 hover:bg-surface-700 text-slate-200 border border-slate-700/60 hover:border-slate-600 focus:ring-slate-500',
+      'bg-white hover:bg-[#F8FAFC] active:bg-slate-100 text-[#0F172A] border border-[#E2E8F0] shadow-xs focus:ring-2 focus:ring-blue-500/20',
     outline:
-      'bg-transparent hover:bg-slate-800/60 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-600 focus:ring-slate-500',
+      'bg-white hover:bg-[#F8FAFC] active:bg-slate-100 text-[#0F172A] border border-[#E2E8F0] shadow-xs focus:ring-2 focus:ring-blue-500/20',
     danger:
-      'bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/20 border border-rose-500/30 focus:ring-rose-500',
+      'bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white border border-rose-600 shadow-xs focus:ring-2 focus:ring-rose-500/20',
     ghost:
-      'bg-transparent hover:bg-slate-800/50 text-slate-400 hover:text-slate-100 focus:ring-slate-500',
+      'bg-transparent hover:bg-slate-100 text-[#64748B] hover:text-[#0F172A] focus:ring-2 focus:ring-blue-500/20',
   };
 
   const sizes = {
-    sm: 'text-xs px-3 py-1.5 gap-1.5',
-    md: 'text-sm px-4 py-2 gap-2',
-    lg: 'text-base px-5 py-2.5 gap-2.5',
+    xs: 'text-xs px-2.5 py-1 gap-1.5 font-medium',
+    sm: 'text-xs px-3 py-1.5 gap-1.5 font-medium',
+    md: 'text-sm px-4 py-2 gap-2 font-medium',
+    lg: 'text-base px-5 py-2.5 gap-2.5 font-medium',
   };
 
   return (
@@ -47,7 +48,11 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={disabled || isLoading}
       {...props}
     >
-      {isLoading ? <Loader2 className="w-4 h-4 animate-spin shrink-0" /> : icon ? <span className="shrink-0">{icon}</span> : null}
+      {isLoading ? (
+        <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" />
+      ) : icon ? (
+        <span className="shrink-0">{icon}</span>
+      ) : null}
       <span>{children}</span>
     </button>
   );

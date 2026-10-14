@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <!-- Merchline Circuit-Connection Brand Mark -->
+  <!-- Top Node: Pill Capsule -->
+  <rect x="22" y="10" width="20" height="12" rx="6" stroke="#2563EB" stroke-width="3.5" fill="#FFFFFF" />
+  
+  <!-- Circuit Branching Lines -->
+  <!-- Left to Right Bus with rounded 90-deg bends -->
+  <path d="M 14 41 V 34 C 14 31 16 29 19 29 H 45 C 48 29 50 31 50 34 V 41" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  
+  <!-- Central Trunk Line -->
+  <path d="M 32 22 V 41" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" fill="none" />
+  
+  <!-- Bottom 3 Ring Nodes -->
+  <circle cx="14" cy="46" r="5" stroke="#2563EB" stroke-width="3.5" fill="#FFFFFF" />
+  <circle cx="32" cy="46" r="5" stroke="#2563EB" stroke-width="3.5" fill="#FFFFFF" />
+  <circle cx="50" cy="46" r="5" stroke="#2563EB" stroke-width="3.5" fill="#FFFFFF" />
+</svg>

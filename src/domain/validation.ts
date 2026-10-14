@@ -69,7 +69,7 @@ export function validateProduct(
     } else if (numPrice < 0) {
       errors.price = 'Price cannot be negative.';
     } else if (numPrice > 1_000_000) {
-      errors.price = 'Price exceeds maximum allowed limit ($1,000,000).';
+      errors.price = 'Price exceeds maximum allowed limit (₹1,000,000).';
     }
   }
 

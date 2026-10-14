@@ -1,8 +1,8 @@
-# CatalogSync — System Architecture & Design Documentation
+# Merchline — System Architecture & Design Documentation
 
 ## 1. Architectural Overview
 
-CatalogSync is structured following Clean Architecture and Domain-Driven Design (DDD) principles. The system enforces strict separation of concerns across four primary tiers:
+Merchline is structured following Clean Architecture and Domain-Driven Design (DDD) principles. The system enforces strict separation of concerns across four primary tiers:
 
 ```mermaid
 graph TD
@@ -57,11 +57,13 @@ graph TD
 
 ### 2.4 Presentation Tier (`src/components/`)
 - **Atomic, Focused Components**:
-  - `layout/`: Responsive header, tab bar, demo banner.
-  - `dashboard/`: KPI cards, completeness distribution bar, remote store health summary.
+  - `layout/`: Responsive header with 4 operational workspaces, slim system status bar, utility actions.
+  - `dashboard/`: Operational metric tiles, incomplete data queue with direct edit action, sync health summary.
   - `catalogue/`: High-density `ProductTable`, visual `ProductGrid`, batch action toolbar, filter drawer, empty states.
-  - `product-modal/`: Dynamic attribute row editor with suggestion chips and live data quality scoring.
+  - `attributes/`: Dedicated Attributes Workspace inspecting attribute keys, usage counts, distinct values, and associated products.
+  - `product-modal/`: Structured dynamic attribute row editor with key suggestion chips and live data quality scoring.
   - `sync/`: Sync queue, audit log table, JSON payload inspection modal, simulation configuration dialog.
+  - `docs/`: Secondary utility documentation modal.
   - `common/`: Badges, buttons, modals, and destructive action confirm dialogues.
 
 ---

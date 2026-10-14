@@ -11,18 +11,18 @@ interface EmptyStateProps {
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
   title = 'No products found',
-  description = 'Try adjusting your search terms, changing filters, or adding a new product to your catalogue.',
+  description = 'Try adjusting your search query, changing active filters, or adding a new product to your catalogue.',
   onResetFilters,
   onAddProduct,
 }) => {
   return (
-    <div className="glass-panel p-12 rounded-2xl flex flex-col items-center justify-center text-center max-w-md mx-auto my-8 border border-slate-800">
-      <div className="w-16 h-16 rounded-2xl bg-surface-800/80 border border-slate-700/60 flex items-center justify-center text-slate-400 mb-4 shadow-inner">
-        <PackageSearch className="w-8 h-8" />
+    <div className="enterprise-card p-12 flex flex-col items-center justify-center text-center max-w-lg mx-auto my-8">
+      <div className="w-14 h-14 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 mb-4">
+        <PackageSearch className="w-7 h-7 text-slate-400" />
       </div>
 
-      <h3 className="text-base font-bold text-white mb-1.5">{title}</h3>
-      <p className="text-xs text-slate-400 mb-6 leading-relaxed">{description}</p>
+      <h3 className="text-base font-bold text-slate-900 mb-1.5">{title}</h3>
+      <p className="text-sm text-slate-500 mb-6 leading-relaxed max-w-sm">{description}</p>
 
       <div className="flex items-center gap-3">
         {onResetFilters && (
@@ -42,7 +42,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
             onClick={onAddProduct}
             icon={<Plus className="w-3.5 h-3.5" />}
           >
-            Add Product
+            New Product
           </Button>
         )}
       </div>

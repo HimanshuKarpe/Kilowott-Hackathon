@@ -1,27 +1,27 @@
 import React from 'react';
 import { PublicationStatus, SyncStatus } from '../../types/product';
-import { Check, Clock, AlertOctagon, Loader2, FileText, CheckCircle2 } from 'lucide-react';
+import { Check, Clock, AlertCircle, Loader2 } from 'lucide-react';
 
 interface PublicationBadgeProps {
   status: PublicationStatus;
   size?: 'sm' | 'md';
 }
 
-export const PublicationBadge: React.FC<PublicationBadgeProps> = ({ status, size = 'md' }) => {
+export const PublicationBadge: React.FC<PublicationBadgeProps> = ({ status, size = 'sm' }) => {
   const configs = {
     published: {
       label: 'Published',
-      classes: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-      dot: 'bg-emerald-400',
+      classes: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+      dot: 'bg-emerald-600',
     },
     draft: {
       label: 'Draft',
-      classes: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
-      dot: 'bg-amber-400',
+      classes: 'bg-amber-50 text-amber-800 border-amber-200',
+      dot: 'bg-amber-600',
     },
     archived: {
       label: 'Archived',
-      classes: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
+      classes: 'bg-slate-100 text-slate-700 border-slate-200',
       dot: 'bg-slate-400',
     },
   };
@@ -30,9 +30,12 @@ export const PublicationBadge: React.FC<PublicationBadgeProps> = ({ status, size
   const padding = size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-1 text-xs';
 
   return (
-    <span className={`inline-flex items-center gap-1.5 font-medium rounded-full border ${padding} ${config.classes}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 font-medium rounded-md border ${padding} ${config.classes}`}
+      title={`Merchandising Status: ${config.label}`}
+    >
       <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
-      {config.label}
+      <span>{config.label}</span>
     </span>
   );
 };
@@ -44,27 +47,32 @@ interface SyncStatusBadgeProps {
   onClick?: () => void;
 }
 
-export const SyncStatusBadge: React.FC<SyncStatusBadgeProps> = ({ status, wooCommerceId, size = 'md', onClick }) => {
+export const SyncStatusBadge: React.FC<SyncStatusBadgeProps> = ({
+  status,
+  wooCommerceId,
+  size = 'sm',
+  onClick,
+}) => {
   const configs = {
     synced: {
       label: 'Synced',
-      icon: <Check className="w-3 h-3 text-emerald-400" />,
-      classes: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
+      icon: <Check className="w-3.5 h-3.5 text-emerald-600" />,
+      classes: 'bg-emerald-50 text-emerald-800 border-emerald-200',
     },
     pending_sync: {
       label: 'Pending Sync',
-      icon: <Clock className="w-3 h-3 text-amber-400" />,
-      classes: 'bg-amber-500/10 text-amber-400 border-amber-500/25',
+      icon: <Clock className="w-3.5 h-3.5 text-amber-600" />,
+      classes: 'bg-amber-50 text-amber-800 border-amber-200',
     },
     sync_error: {
-      label: 'Sync Error',
-      icon: <AlertOctagon className="w-3 h-3 text-rose-400" />,
-      classes: 'bg-rose-500/10 text-rose-400 border-rose-500/25',
+      label: 'Sync Failed',
+      icon: <AlertCircle className="w-3.5 h-3.5 text-rose-600" />,
+      classes: 'bg-rose-50 text-rose-800 border-rose-200',
     },
     syncing: {
       label: 'Syncing...',
-      icon: <Loader2 className="w-3 h-3 text-brand-400 animate-spin" />,
-      classes: 'bg-brand-500/10 text-brand-300 border-brand-500/25 animate-pulse-subtle',
+      icon: <Loader2 className="w-3.5 h-3.5 text-blue-600 animate-spin" />,
+      classes: 'bg-blue-50 text-blue-800 border-blue-200',
     },
   };
 
@@ -74,15 +82,21 @@ export const SyncStatusBadge: React.FC<SyncStatusBadgeProps> = ({ status, wooCom
   return (
     <span
       onClick={onClick}
-      className={`inline-flex items-center gap-1.5 font-medium rounded-full border ${padding} ${config.classes} ${
-        onClick ? 'cursor-pointer hover:opacity-80' : ''
+      className={`inline-flex items-center gap-1.5 font-medium rounded-md border ${padding} ${config.classes} ${
+        onClick ? 'cursor-pointer hover:bg-slate-100' : ''
       }`}
-      title={wooCommerceId ? `WooCommerce Remote ID: #${wooCommerceId}` : undefined}
+      title={
+        wooCommerceId
+          ? `WooCommerce Remote Entity ID: #${wooCommerceId}`
+          : `Sync Integration Status: ${config.label}`
+      }
     >
       {config.icon}
       <span>{config.label}</span>
       {wooCommerceId && status === 'synced' && (
-        <span className="text-[10px] opacity-75 font-mono">#{wooCommerceId}</span>
+        <span className="font-mono text-[10px] text-emerald-900 bg-white/90 px-1.5 py-0.5 rounded border border-emerald-300 font-semibold">
+          #{wooCommerceId}
+        </span>
       )}
     </span>
   );
@@ -94,23 +108,26 @@ interface CompletenessBadgeProps {
   size?: 'sm' | 'md';
 }
 
-export const CompletenessBadge: React.FC<CompletenessBadgeProps> = ({ score, isComplete, size = 'md' }) => {
-  let color = 'text-rose-400 bg-rose-500/10 border-rose-500/20';
-  if (score >= 80) {
-    color = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-  } else if (score >= 60) {
-    color = 'text-amber-400 bg-amber-500/10 border-amber-500/20';
+export const CompletenessBadge: React.FC<CompletenessBadgeProps> = ({ score }) => {
+  let barColor = 'bg-rose-500';
+  let textColor = 'text-rose-700';
+  if (score >= 75) {
+    barColor = 'bg-emerald-500';
+    textColor = 'text-emerald-700';
+  } else if (score >= 50) {
+    barColor = 'bg-amber-500';
+    textColor = 'text-amber-700';
   }
 
-  const padding = size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-1 text-xs';
-
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 font-medium rounded-full border ${padding} ${color}`}
-      title={isComplete ? 'Product information is complete for WooCommerce' : 'Incomplete product fields'}
+    <div
+      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-50 border border-slate-200 text-xs"
+      title={`Data Quality Score: ${score}% Complete`}
     >
-      {isComplete ? <CheckCircle2 className="w-3 h-3 shrink-0" /> : <FileText className="w-3 h-3 shrink-0" />}
-      <span>{score}% Data Quality</span>
-    </span>
+      <div className="w-8 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+        <div className={`h-full ${barColor}`} style={{ width: `${score}%` }} />
+      </div>
+      <span className={`font-mono font-semibold ${textColor}`}>{score}%</span>
+    </div>
   );
 };

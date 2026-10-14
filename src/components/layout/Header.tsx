@@ -1,15 +1,25 @@
-import React from 'react';
-import { Layers, RefreshCw, Plus, RotateCcw, LayoutDashboard, ShoppingBag, BookOpen } from 'lucide-react';
+import React, { useMemo } from 'react';
+import {
+  RefreshCw,
+  Plus,
+  RotateCcw,
+  LayoutDashboard,
+  Package,
+  Tags,
+  BookOpen,
+} from 'lucide-react';
 import { Button } from '../common/Button';
+import { MerchlineLogo } from '../common/MerchlineLogo';
 import { useCatalog } from '../../context/CatalogContext';
 
-export type NavigationTab = 'dashboard' | 'catalogue' | 'sync' | 'docs';
+export type NavigationTab = 'dashboard' | 'catalogue' | 'attributes' | 'sync';
 
 interface HeaderProps {
   activeTab: NavigationTab;
   onSelectTab: (tab: NavigationTab) => void;
   onOpenAddModal: () => void;
   onOpenResetConfirm: () => void;
+  onOpenDocs: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -17,6 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectTab,
   onOpenAddModal,
   onOpenResetConfirm,
+  onOpenDocs,
 }) => {
   const { products, syncAllPendingProducts, isSyncing } = useCatalog();
 
@@ -24,38 +35,52 @@ export const Header: React.FC<HeaderProps> = ({
     (p) => p.syncStatus === 'pending_sync' || p.syncStatus === 'sync_error'
   ).length;
 
+  // Unique attribute keys count
+  const attributeKeysCount = useMemo(() => {
+    const keys = new Set<string>();
+    products.forEach((p) => {
+      p.attributes?.forEach((a) => {
+        if (a.name?.trim()) keys.add(a.name.trim().toLowerCase());
+      });
+    });
+    return keys.size;
+  }, [products]);
+
   return (
-    <header className="sticky top-0 z-40 bg-surface-950/80 backdrop-blur-xl border-b border-slate-800">
+    <header className="sticky top-0 z-40 bg-white border-b border-[#E2E8F0] shadow-2xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Logo & Brand */}
+          {/* Left: Official Merchline Brand Logo & Wordmark */}
           <div className="flex items-center gap-6">
             <div
-              className="flex items-center gap-2.5 cursor-pointer select-none"
+              className="flex items-center gap-3 cursor-pointer select-none"
               onClick={() => onSelectTab('dashboard')}
+              title="Merchline PIM — One catalogue. Every channel."
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-brand-500/20 border border-brand-300/30">
-                <Layers className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-extrabold text-base tracking-tight text-white">CatalogSync</span>
-                  <span className="text-[10px] font-semibold tracking-wider uppercase px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">
+              <MerchlineLogo size="md" color="#2563EB" withBadge={true} />
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-lg tracking-tight text-[#0F172A] leading-none">
+                    Merchline
+                  </span>
+                  <span className="text-[10px] font-mono font-semibold uppercase text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
                     PIM
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 hidden sm:block">WooCommerce Synchronisation</p>
+                <span className="text-[11px] text-[#64748B] mt-0.5 hidden sm:block font-normal">
+                  One catalogue. Every channel.
+                </span>
               </div>
             </div>
 
-            {/* Navigation Tabs */}
-            <nav className="hidden md:flex items-center gap-1 bg-surface-900/80 p-1 rounded-xl border border-slate-800">
+            {/* Centre: Main Navigation Segmented Control */}
+            <nav className="hidden lg:flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#E2E8F0]">
               <button
                 onClick={() => onSelectTab('dashboard')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
                   activeTab === 'dashboard'
-                    ? 'bg-brand-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold shadow-2xs'
+                    : 'text-[#64748B] hover:text-[#0F172A] hover:bg-slate-200/50 font-medium'
                 }`}
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
@@ -64,90 +89,124 @@ export const Header: React.FC<HeaderProps> = ({
 
               <button
                 onClick={() => onSelectTab('catalogue')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
                   activeTab === 'catalogue'
-                    ? 'bg-brand-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold shadow-2xs'
+                    : 'text-[#64748B] hover:text-[#0F172A] hover:bg-slate-200/50 font-medium'
                 }`}
               >
-                <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Product Catalogue</span>
-                <span className="px-1.5 py-0.2 rounded-full bg-slate-800 text-[10px] text-slate-300 font-mono">
+                <Package className="w-3.5 h-3.5" />
+                <span>Products</span>
+                <span
+                  className={`px-1.5 py-0.2 rounded text-[11px] font-mono ${
+                    activeTab === 'catalogue'
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-slate-200 text-slate-700'
+                  }`}
+                >
                   {products.length}
                 </span>
               </button>
 
               <button
-                onClick={() => onSelectTab('sync')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  activeTab === 'sync'
-                    ? 'bg-brand-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                onClick={() => onSelectTab('attributes')}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
+                  activeTab === 'attributes'
+                    ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold shadow-2xs'
+                    : 'text-[#64748B] hover:text-[#0F172A] hover:bg-slate-200/50 font-medium'
                 }`}
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-brand-300' : ''}`} />
+                <Tags className="w-3.5 h-3.5" />
+                <span>Attributes</span>
+                <span
+                  className={`px-1.5 py-0.2 rounded text-[11px] font-mono ${
+                    activeTab === 'attributes'
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-slate-200 text-slate-700'
+                  }`}
+                >
+                  {attributeKeysCount}
+                </span>
+              </button>
+
+              <button
+                onClick={() => onSelectTab('sync')}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs transition-all cursor-pointer ${
+                  activeTab === 'sync'
+                    ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold shadow-2xs'
+                    : 'text-[#64748B] hover:text-[#0F172A] hover:bg-slate-200/50 font-medium'
+                }`}
+              >
+                <RefreshCw
+                  className={`w-3.5 h-3.5 ${
+                    isSyncing ? 'animate-spin text-blue-600' : ''
+                  }`}
+                />
                 <span>Sync Centre</span>
                 {pendingCount > 0 && (
-                  <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-mono">
+                  <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-mono font-bold">
                     {pendingCount}
                   </span>
                 )}
               </button>
-
-              <button
-                onClick={() => onSelectTab('docs')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  activeTab === 'docs'
-                    ? 'bg-brand-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>Docs & Specs</span>
-              </button>
             </nav>
           </div>
 
-          {/* Quick Header Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Right: Header Action Tools */}
+          <div className="flex items-center gap-2">
+            {/* Help & Specs Modal Trigger */}
             <button
-              onClick={onOpenResetConfirm}
-              className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-surface-800 border border-transparent hover:border-slate-700 text-xs transition-colors"
-              title="Reset catalogue & sync logs to default demo data"
+              onClick={onOpenDocs}
+              className="flex items-center gap-1.5 text-xs text-[#64748B] hover:text-[#0F172A] px-2.5 py-1.5 rounded-lg hover:bg-slate-100 border border-[#E2E8F0] transition-colors cursor-pointer"
+              title="Documentation, System Overview, and WooCommerce Integration Blueprint"
             >
-              <RotateCcw className="w-4 h-4" />
+              <BookOpen className="w-3.5 h-3.5 text-slate-500" />
+              <span className="hidden sm:inline font-medium">Help & Specs</span>
             </button>
 
+            {/* Reset Data Confirmation Trigger */}
+            <button
+              onClick={onOpenResetConfirm}
+              className="p-1.5 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 border border-[#E2E8F0] transition-colors cursor-pointer"
+              title="Reset catalogue to default demo seed data"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Sync Pending Trigger Button */}
             {pendingCount > 0 && (
               <Button
-                variant="outline"
+                variant="secondary"
                 size="sm"
                 onClick={syncAllPendingProducts}
                 isLoading={isSyncing}
-                icon={<RefreshCw className="w-3.5 h-3.5 text-amber-400" />}
-                className="hidden sm:inline-flex border-amber-500/30 text-amber-300 hover:bg-amber-500/10"
+                icon={<RefreshCw className="w-3.5 h-3.5 text-amber-600" />}
+                className="hidden sm:inline-flex border-amber-300 text-amber-800 bg-amber-50 hover:bg-amber-100"
               >
                 Sync Pending ({pendingCount})
               </Button>
             )}
 
+            {/* Primary Action Button */}
             <Button
               variant="primary"
               size="sm"
               onClick={onOpenAddModal}
-              icon={<Plus className="w-4 h-4" />}
+              icon={<Plus className="w-3.5 h-3.5" />}
             >
-              Add Product
+              New Product
             </Button>
           </div>
         </div>
 
-        {/* Mobile Navigation Row */}
-        <div className="flex md:hidden items-center justify-between py-2 border-t border-slate-800/80 overflow-x-auto gap-2 text-xs">
+        {/* Medium and Mobile Navigation Bar */}
+        <div className="flex lg:hidden items-center justify-between py-2 border-t border-[#E2E8F0] overflow-x-auto gap-1 text-xs">
           <button
             onClick={() => onSelectTab('dashboard')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg ${
-              activeTab === 'dashboard' ? 'bg-brand-600 text-white' : 'text-slate-400'
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md font-medium cursor-pointer ${
+              activeTab === 'dashboard'
+                ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold'
+                : 'text-[#64748B]'
             }`}
           >
             <LayoutDashboard className="w-3 h-3" />
@@ -155,30 +214,36 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <button
             onClick={() => onSelectTab('catalogue')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg ${
-              activeTab === 'catalogue' ? 'bg-brand-600 text-white' : 'text-slate-400'
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md font-medium cursor-pointer ${
+              activeTab === 'catalogue'
+                ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold'
+                : 'text-[#64748B]'
             }`}
           >
-            <ShoppingBag className="w-3 h-3" />
-            <span>Catalogue ({products.length})</span>
+            <Package className="w-3 h-3" />
+            <span>Products ({products.length})</span>
+          </button>
+          <button
+            onClick={() => onSelectTab('attributes')}
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md font-medium cursor-pointer ${
+              activeTab === 'attributes'
+                ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold'
+                : 'text-[#64748B]'
+            }`}
+          >
+            <Tags className="w-3 h-3" />
+            <span>Attributes ({attributeKeysCount})</span>
           </button>
           <button
             onClick={() => onSelectTab('sync')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg ${
-              activeTab === 'sync' ? 'bg-brand-600 text-white' : 'text-slate-400'
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-md font-medium cursor-pointer ${
+              activeTab === 'sync'
+                ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold'
+                : 'text-[#64748B]'
             }`}
           >
             <RefreshCw className="w-3 h-3" />
             <span>Sync ({pendingCount})</span>
-          </button>
-          <button
-            onClick={() => onSelectTab('docs')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg ${
-              activeTab === 'docs' ? 'bg-brand-600 text-white' : 'text-slate-400'
-            }`}
-          >
-            <BookOpen className="w-3 h-3" />
-            <span>Docs</span>
           </button>
         </div>
       </div>

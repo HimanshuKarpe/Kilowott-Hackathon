@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 interface ModalProps {
@@ -7,7 +8,7 @@ interface ModalProps {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl';
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -48,38 +49,45 @@ export const Modal: React.FC<ModalProps> = ({
     lg: 'max-w-lg',
     xl: 'max-w-xl',
     '2xl': 'max-w-2xl',
+    '3xl': 'max-w-3xl',
     '4xl': 'max-w-4xl',
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-      {/* Backdrop */}
+  const modalContent = (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+      {/* Soft translucent backdrop */}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
         onClick={onClose}
+        aria-hidden="true"
       />
 
-      {/* Modal Dialog */}
+      {/* Modal Card Surface */}
       <div
-        className={`relative w-full ${maxWidths[maxWidth]} bg-surface-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden z-10 animate-slideIn my-8 max-h-[90vh] flex flex-col`}
+        className={`relative w-full ${maxWidths[maxWidth]} bg-white border border-[#E2E8F0] rounded-xl shadow-xl overflow-hidden z-10 animate-dialog my-auto max-h-[90vh] flex flex-col`}
+        role="dialog"
+        aria-modal="true"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-800 bg-surface-900/60 shrink-0">
+        {/* Visible Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0] bg-[#F8FAFC] shrink-0">
           <div>
-            <h3 className="text-lg font-bold text-white tracking-tight">{title}</h3>
-            {subtitle && <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>}
+            <h3 className="text-base font-semibold text-[#0F172A] tracking-tight">{title}</h3>
+            {subtitle && <p className="text-xs text-[#64748B] mt-0.5">{subtitle}</p>}
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800/80 transition-colors"
+            aria-label="Close dialog"
+            className="text-[#64748B] hover:text-[#0F172A] p-1.5 rounded-lg hover:bg-slate-200/60 transition-colors cursor-pointer"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 overflow-y-auto flex-1">{children}</div>
+        {/* Single Scrollable Content Body */}
+        <div className="px-6 py-5 overflow-y-auto flex-1">{children}</div>
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };

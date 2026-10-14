@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Rounded Badge Surface -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" />
+  
+  <!-- Merchline Circuit Symbol -->
+  <rect x="22" y="12" width="20" height="12" rx="6" stroke="#2563EB" stroke-width="3.5" fill="#FFFFFF" />
+  <path d="M 14 41 V 34 C 14 31 16 29 19 29 H 45 C 48 29 50 31 50 34 V 41" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <path d="M 32 24 V 41" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" fill="none" />
+  <circle cx="14" cy="46" r="5" stroke="#2563EB" stroke-width="3.5" fill="#FFFFFF" />
+  <circle cx="32" cy="46" r="5" stroke="#2563EB" stroke-width="3.5" fill="#FFFFFF" />
+  <circle cx="50" cy="46" r="5" stroke="#2563EB" stroke-width="3.5" fill="#FFFFFF" />
+</svg>

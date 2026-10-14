@@ -1,6 +1,6 @@
-# CatalogSync — Modern PIM & WooCommerce Synchronization Dashboard
+# Merchline — One catalogue. Every channel.
 
-> A high-performance Product Information Management (PIM) dashboard for e-commerce teams to manage product master data, validate catalogue completeness, and seamlessly synchronize with WooCommerce.
+> A professional Product Information Management (PIM) dashboard for e-commerce businesses synchronising product data with WooCommerce.
 
 ---
 
@@ -11,17 +11,17 @@ E-commerce merchants managing modern product catalogues face several recurring f
 - **Incomplete Product Publishing**: Products are frequently pushed to storefronts with missing images, blank technical specifications, zero stock, or unformatted SKUs.
 - **Synchronization Fragility**: Direct manual entry into WooCommerce is error-prone, lacks auditability, and provides no clear history of payload failures or rate-limiting events.
 
-**CatalogSync solves this** by acting as the authoritative Single Source of Truth (PIM) before products are dispatched to WooCommerce. It enforces SKU uniqueness, validates numeric pricing and integer stock, tracks dynamic attributes, computes real-time completeness scores, and provides an audited synchronization pipeline.
+**Merchline solves this** by acting as the authoritative Single Source of Truth (PIM) before products are dispatched to WooCommerce. It enforces SKU uniqueness, validates numeric pricing and integer stock, tracks dynamic attributes, computes real-time completeness scores, and provides an audited synchronization pipeline.
 
 ---
 
 ## 2. Core Features
 
 ### 📊 1. Executive Dashboard
-- **4 Key Operational Metrics**: Total Products (with category breakdown), Published Products (% live), Incomplete Data (flagging missing fields), and Products Requiring Synchronisation.
-- **Completeness & Data Quality Gauge**: Real-time distribution showing percentage of ready vs. incomplete items.
+- **4 Meaningful Operational Metrics**: Total Products (with category breakdown), Published Products (% live), Incomplete Product Data (flagging missing fields), and Sync Issues (queue and error counts).
+- **Products Requiring Attention**: Unified actionable table prioritizing sync failures and incomplete data, with direct **Edit Product** and **Retry Sync** actions.
+- **Catalogue Data Quality & Distribution Strip**: Overview of catalogue quality index score with completeness breakdown.
 - **Remote Store Status**: Displays simulated WooCommerce adapter health, active latency, and injected error rates.
-- **Recent Synchronisation Stream**: Quick audit cards with HTTP response codes, latency in milliseconds, and one-click JSON payload inspection.
 
 ### 🛍️ 2. Comprehensive Product Catalogue
 - **Full Search & Multi-Filter Engine**: Instant search across titles, unique SKUs, categories, descriptions, and dynamic custom attributes.
@@ -60,7 +60,7 @@ E-commerce merchants managing modern product catalogues face several recurring f
 | :--- | :--- | :--- |
 | **Framework** | React 18 + TypeScript | Component model with strict typing |
 | **Build Tool** | Vite 6 | Sub-second HMR and optimized bundler |
-| **Styling** | Tailwind CSS 3 | Bespoke modern dark enterprise design tokens |
+| **Styling** | Tailwind CSS 3 | Professional light-themed enterprise design tokens |
 | **Icons** | Lucide React | High-clarity iconography |
 | **Persistence** | Browser `localStorage` | Client-side sandbox persistence |
 | **Unit Testing** | Vitest + Testing Library | Blazing-fast business logic test runner |
@@ -69,7 +69,7 @@ E-commerce merchants managing modern product catalogues face several recurring f
 
 ## 4. Architecture & Clean Code Separation
 
-CatalogSync strictly adheres to **Clean Architecture** and **Domain-Driven Design (DDD)**:
+Merchline strictly adheres to **Clean Architecture** and **Domain-Driven Design (DDD)**:
 
 ```
 src/
@@ -81,11 +81,12 @@ src/
 ├── context/                    # Reactive state (CatalogContext, ToastContext)
 ├── components/                 # Atomic UI components
 │   ├── layout/                 # Header, DemoBanner, Navigation
-│   ├── dashboard/              # KPI cards, Health gauges, Activity stream
+│   ├── dashboard/              # Operational KPI tiles, Incomplete queue, Sync log
 │   ├── catalogue/              # ProductTable, ProductGrid, FilterToolbar, BatchActions
-│   ├── product-modal/          # ProductModal with dynamic attributes manager
+│   ├── attributes/             # Dedicated Attributes Workspace & Schema distribution
+│   ├── product-modal/          # ProductModal with structured dynamic attribute editor
 │   ├── sync/                   # SyncCentre, PayloadInspectModal, SimulationConfigModal
-│   ├── docs/                   # In-app architecture & REST mapping viewer
+│   ├── docs/                   # Architecture & REST mapping documentation modal
 │   └── common/                 # Reusable Button, Modal, Badge, ConfirmDialog
 └── test/                       # Comprehensive Vitest test suites
 ```

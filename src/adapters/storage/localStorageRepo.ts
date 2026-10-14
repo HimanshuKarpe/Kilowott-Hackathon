@@ -111,7 +111,7 @@ export const localStorageRepo = {
     const products = this.getProducts();
     const logs = this.getSyncLogs();
     const bundle = {
-      app: 'CatalogSync PIM',
+      app: 'Merchline PIM',
       version: '1.0.0',
       exportedAt: new Date().toISOString(),
       products,

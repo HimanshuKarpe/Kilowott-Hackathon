@@ -21,12 +21,12 @@ export const BatchActionToolbar: React.FC<BatchActionToolbarProps> = ({
   if (selectedProductIds.length === 0) return null;
 
   return (
-    <div className="sticky top-20 z-30 p-3 rounded-2xl bg-brand-950/95 border border-brand-500/40 backdrop-blur-xl shadow-2xl flex flex-wrap items-center justify-between gap-3 animate-slideIn">
-      <div className="flex items-center gap-3">
-        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-brand-500 text-white font-bold text-xs">
+    <div className="sticky top-16 z-30 p-3 rounded-xl bg-white border border-slate-300 shadow-lg flex flex-wrap items-center justify-between gap-3 animate-dialog">
+      <div className="flex items-center gap-2.5">
+        <span className="flex items-center justify-center px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-mono font-bold text-xs">
           {selectedProductIds.length}
         </span>
-        <span className="text-xs font-semibold text-white">
+        <span className="text-sm font-medium text-slate-800">
           {selectedProductIds.length === 1 ? '1 product selected' : `${selectedProductIds.length} products selected`}
         </span>
       </div>
@@ -46,7 +46,7 @@ export const BatchActionToolbar: React.FC<BatchActionToolbarProps> = ({
           variant="secondary"
           size="sm"
           onClick={() => batchUpdatePublicationStatus(selectedProductIds, 'published')}
-          icon={<CheckCircle className="w-3.5 h-3.5 text-emerald-400" />}
+          icon={<CheckCircle className="w-3.5 h-3.5 text-emerald-600" />}
         >
           Publish
         </Button>
@@ -55,7 +55,7 @@ export const BatchActionToolbar: React.FC<BatchActionToolbarProps> = ({
           variant="secondary"
           size="sm"
           onClick={() => batchUpdatePublicationStatus(selectedProductIds, 'draft')}
-          icon={<FileText className="w-3.5 h-3.5 text-amber-400" />}
+          icon={<FileText className="w-3.5 h-3.5 text-amber-600" />}
         >
           Draft
         </Button>
@@ -71,7 +71,7 @@ export const BatchActionToolbar: React.FC<BatchActionToolbarProps> = ({
 
         <button
           onClick={clearSelection}
-          className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors ml-1"
+          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
           title="Clear selection"
         >
           <X className="w-4 h-4" />

@@ -42,7 +42,7 @@ export function calculateCompleteness(product: Partial<Product>): CompletenessRe
     score += 15;
   } else if (product.price === 0) {
     score += 5; // Free item or placeholder
-    recommendations.push('Verify if $0.00 price is intended');
+    recommendations.push('Verify if ₹0.00 price is intended');
   } else {
     missingFields.push('Price');
     recommendations.push('Specify a valid selling price');
